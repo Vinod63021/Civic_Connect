@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Connect - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .header { background: #007BFF; color: white; padding: 15px; text-align: center; font-size: 24px; }
+        .menu { background: #0056b3; padding: 15px; text-align: center; }
+        .menu a { color: white; text-decoration: none; padding: 10px 20px; display: inline-block; margin: 5px; background: #004080; border-radius: 5px; }
+        .menu a:hover { background: #003366; }
+        .container { width: 80%; margin: auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0px 0px 10px gray; margin-top: 10px; }
+        .hidden { display: none; }
+        .chat-box, .tracking-status { background: #fff; border-radius: 5px; padding: 15px; margin-top: 20px; box-shadow: 0px 0px 10px gray; }
+        .logout { display: block; text-align: center; margin-top: 20px; padding: 10px; background: red; color: white; text-decoration: none; border-radius: 5px; }
+        .logout:hover { background: darkred; }
+    </style>
+</head>
+<body>
+    <div class="header">Welcome to Civic-Connect Dashboard</div>
+    <div class="menu">
+        <a href="#" onclick="showSection('profile')">Profile</a>
+        <a href="#" onclick="showSection('reportIssue')">One-Click Issue Reporting</a>
+        <a href="#" onclick="showSection('commonProblems')">Common Problems</a>
+        <a href="#" onclick="showSection('liveTracking')">Live Tracking</a>
+        <a href="#" onclick="showSection('directCommunication')">Direct Communication</a>
+    </div>
+    <div class="container">
+        <div id="profile" class="content">
+            <h2>User Profile</h2>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> johndoe@example.com</p>
+        </div>
+        <div id="reportIssue" class="content hidden">
+            <h2>Report an Issue</h2>
+            <textarea id="issueDescription" placeholder="Describe the issue..."></textarea>
+            <br><br>
+            <button onclick="submitIssue()">Submit</button>
+        </div>
+    </div>
+    <a href="index.html" class="logout">Logout</a> <!-- Fixed logout link -->
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+        function submitIssue() {
+            let description = document.getElementById("issueDescription").value;
+            if (description) {
+                alert("Issue submitted successfully!");
+                document.getElementById("issueDescription").value = "";
+            } else {
+                alert("Please enter a description.");
+            }
+        }
+    </script>
+</body>
+</html>
