@@ -13,7 +13,6 @@
         .menu a:hover { background: #003366; }
         .container { width: 80%; margin: auto; padding: 20px; background: white; border-radius: 5px; box-shadow: 0px 0px 10px gray; margin-top: 10px; }
         .hidden { display: none; }
-        .chat-box, .tracking-status { background: #fff; border-radius: 5px; padding: 15px; margin-top: 20px; box-shadow: 0px 0px 10px gray; }
         .logout { display: block; text-align: center; margin-top: 20px; padding: 10px; background: red; color: white; text-decoration: none; border-radius: 5px; }
         .logout:hover { background: darkred; }
     </style>
@@ -22,7 +21,6 @@
     <div class="header">Welcome to Civic-Connect Dashboard</div>
     <div class="menu">
         <a href="#" onclick="showSection('profile')">Profile</a>
-        <a href="#" onclick="showSection('reportIssue')">One-Click Issue Reporting</a>
         <a href="#" onclick="showSection('commonProblems')">Common Problems</a>
         <a href="#" onclick="showSection('liveTracking')">Live Tracking</a>
         <a href="#" onclick="showSection('directCommunication')">Direct Communication</a>
@@ -33,27 +31,60 @@
             <p><strong>Name:</strong> John Doe</p>
             <p><strong>Email:</strong> johndoe@example.com</p>
         </div>
-        <div id="reportIssue" class="content hidden">
-            <h2>Report an Issue</h2>
-            <textarea id="issueDescription" placeholder="Describe the issue..."></textarea>
-            <br><br>
-            <button onclick="submitIssue()">Submit</button>
+        <div id="commonProblems" class="content hidden">
+            <h2>Common Problems</h2>
+            <ul>
+                <li>Potholes - <span id="vote1">0</span> votes <button onclick="vote(1)">Vote</button></li>
+                <li>Garbage Issues - <span id="vote2">0</span> votes <button onclick="vote(2)">Vote</button></li>
+                <li>Water Supply Issues - <span id="vote3">0</span> votes <button onclick="vote(3)">Vote</button></li>
+                <li>Electricity Problems - <span id="vote4">0</span> votes <button onclick="vote(4)">Vote</button></li>
+            </ul>
+            <div class="chart-container">
+                <canvas id="voteChart"></canvas>
+            </div>
+        </div>
+        <div id="liveTracking" class="content hidden">
+            <h2>Live Tracking</h2>
+            <p>Status: In Progress...</p>
+        </div>
+        <div id="directCommunication" class="content hidden">
+            <h2>Direct Communication</h2>
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+            <div id="chatMessages"></div>
         </div>
     </div>
-    <a href="index.html" class="logout">Logout</a> <!-- Fixed logout link -->
+    <a href="index.html" class="logout">Logout</a>
 
     <script>
+        let votes = [0, 0, 0, 0];
+        const ctx = document.getElementById('voteChart').getContext('2d');
+        let voteChart = new Chart(ctx, {
+            type: 'pie',
+            data: { labels: ['Potholes', 'Garbage', 'Water Supply', 'Electricity'], datasets: [{ data: votes, backgroundColor: ['red', 'blue', 'green', 'orange'] }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
         function showSection(sectionId) {
             document.querySelectorAll('.content').forEach(section => section.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
         }
-        function submitIssue() {
-            let description = document.getElementById("issueDescription").value;
-            if (description) {
-                alert("Issue submitted successfully!");
-                document.getElementById("issueDescription").value = "";
-            } else {
-                alert("Please enter a description.");
+        
+        function vote(issueId) {
+            votes[issueId - 1]++;
+            document.getElementById('vote' + issueId).textContent = votes[issueId - 1];
+            voteChart.data.datasets[0].data = votes;
+            voteChart.update();
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("chatInput").value;
+            if (input) {
+                let chatBox = document.getElementById("chatMessages");
+                let message = document.createElement("p");
+                message.textContent = "You: " + input;
+                chatBox.appendChild(message);
+                document.getElementById("chatInput").value = "";
             }
         }
     </script>
