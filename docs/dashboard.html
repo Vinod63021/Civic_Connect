@@ -209,9 +209,9 @@
             <div class="features">
                 <h2>Key Features</h2>
                 <ul>
-                    <li><strong>Community-Powered Issue Reporting 🏙:</strong> Users report local problems like potholes, streetlight failures, or waste management issues through the app. AI and geotagging help validate reports for accuracy. The community can upvote and prioritize critical issues.</li>
+                    <li><strong>Community-Powered Issue Reporting 🏙️:</strong> Users report local problems like potholes, streetlight failures, or waste management issues through the app. AI and geotagging help validate reports for accuracy. The community can upvote and prioritize critical issues.</li>
                     <li><strong>Trust Points System ⭐:</strong> Citizens earn Trust Points for reporting verified issues, providing solutions, and participating in civic discussions. Unlike traditional rewards, these points don’t translate into discounts—they enhance reputation and influence decision-making.</li>
-                    <li><strong>Community-Driven Prioritization 🗳:</strong> Residents can allocate Trust Points to the most pressing issues, helping authorities prioritize efficiently. This ensures that urgent problems get resolved faster based on public demand.</li>
+                    <li><strong>Community-Driven Prioritization 🗳️:</strong> Residents can allocate Trust Points to the most pressing issues, helping authorities prioritize efficiently. This ensures that urgent problems get resolved faster based on public demand.</li>
                     <li><strong>Government & Citizen Collaboration 🤝:</strong> Local governments gain real-time insights into public concerns. Authorities recognize and reward highly active citizens with public acknowledgments, leadership opportunities, and direct policy influence. Transparent tracking ensures accountability in issue resolution.</li>
                     <li><strong>Recognition & Civic Influence 🏅:</strong> Users with high Trust Points may receive certificates of recognition from local officials, opportunities to be part of civic councils or advisory boards, and direct engagement with policymakers for city improvements.</li>
                 </ul>
@@ -295,7 +295,7 @@
                             label: function (tooltipItem) {
                                 let sum = votes.reduce((a, b) => a + b, 0);
                                 let percentage = (votes[tooltipItem.dataIndex] / sum * 100).toFixed(1);
-                                return ${percentage}% (${votes[tooltipItem.dataIndex]} votes);
+                                return `${percentage}% (${votes[tooltipItem.dataIndex]} votes)`;
                             }
                         }
                     }
@@ -350,14 +350,14 @@
             let trackingList = document.getElementById("trackingList");
             let newItem = document.createElement("li");
             let imageUrl = URL.createObjectURL(imageInput.files[0]); // Create a URL for the uploaded image
-            newItem.innerHTML = Issue Reported: ${description} at ${location}<br><img src="${imageUrl}" alt="Issue Image" class="live-tracking-image">;
+            newItem.innerHTML = `Issue Reported: ${description} at ${location}<br><img src="${imageUrl}" alt="Issue Image" class="live-tracking-image">`;
             trackingList.appendChild(newItem);
             
             // Add to current issues dynamically
             let problemsList = document.getElementById("problemsList");
             let newProblem = document.createElement("li");
             let problemId = problemsList.children.length + 1;
-            newProblem.innerHTML = ${description} at ${location} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="upvote(${problemId})">Upvote</button> <button class="vote-button" onclick="downvote(${problemId})">Downvote</button>;
+            newProblem.innerHTML = `${description} at ${location} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="upvote(${problemId})">Upvote</button> <button class="vote-button" onclick="downvote(${problemId})">Downvote</button>`;
             problemsList.appendChild(newProblem);
             
             // Update Pie Chart
