@@ -25,7 +25,8 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .header { 
+        .header {
+            font-style: inherit;
             font-size: 60px; 
             font-weight: 600; 
             margin: 20px; 
@@ -171,16 +172,13 @@
         .vote-button {
             margin-left: 10px; /* Space between text and button */
         }
-<<<<<<< HEAD
-=======
         .live-tracking-image {
-            width:             100%; /* Set a fixed width for the image */
+            width: 100%; /* Set a fixed width for the image */
             max-width: 300px; /* Set a max width for the image */
             height: auto; /* Maintain aspect ratio */
             border-radius: 5px; /* Rounded corners for the image */
             margin-top: 10px; /* Space above the image */
         }
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
     </style>
 </head>
 <body>
@@ -196,18 +194,12 @@
         <a href="#" onclick="showSection('reportIssue')">Report Issue</a>
         <a href="#" onclick="showSection('currentIssues')">Current Issue List</a>
         <a href="#" onclick="showSection('liveTracking')">Live Tracking</a>
-<<<<<<< HEAD
-=======
         <a href="#" class="logout" onclick="logout()">Logout</a>
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
     </div>
 
     <div class="header">Welcome to Civic Connect</div>
 
     <div class="container">
-<<<<<<< HEAD
-        <div id="profile" class="content active profile-container">
-=======
         <div id="home" class="content active">
             <h2>Your platform for reporting and tracking civic issues in your community.</h2>
             <div class="overview">
@@ -217,9 +209,9 @@
             <div class="features">
                 <h2>Key Features</h2>
                 <ul>
-                    <li><strong>Community-Powered Issue Reporting 🏙️:</strong> Users report local problems like potholes, streetlight failures, or waste management issues through the app. AI and geotagging help validate reports for accuracy. The community can upvote and prioritize critical issues.</li>
+                    <li><strong>Community-Powered Issue Reporting 🏙:</strong> Users report local problems like potholes, streetlight failures, or waste management issues through the app. AI and geotagging help validate reports for accuracy. The community can upvote and prioritize critical issues.</li>
                     <li><strong>Trust Points System ⭐:</strong> Citizens earn Trust Points for reporting verified issues, providing solutions, and participating in civic discussions. Unlike traditional rewards, these points don’t translate into discounts—they enhance reputation and influence decision-making.</li>
-                    <li><strong>Community-Driven Prioritization 🗳️:</strong> Residents can allocate Trust Points to the most pressing issues, helping authorities prioritize efficiently. This ensures that urgent problems get resolved faster based on public demand.</li>
+                    <li><strong>Community-Driven Prioritization 🗳:</strong> Residents can allocate Trust Points to the most pressing issues, helping authorities prioritize efficiently. This ensures that urgent problems get resolved faster based on public demand.</li>
                     <li><strong>Government & Citizen Collaboration 🤝:</strong> Local governments gain real-time insights into public concerns. Authorities recognize and reward highly active citizens with public acknowledgments, leadership opportunities, and direct policy influence. Transparent tracking ensures accountability in issue resolution.</li>
                     <li><strong>Recognition & Civic Influence 🏅:</strong> Users with high Trust Points may receive certificates of recognition from local officials, opportunities to be part of civic councils or advisory boards, and direct engagement with policymakers for city improvements.</li>
                 </ul>
@@ -227,10 +219,9 @@
         </div>
 
         <div id="profile" class="content profile-container">
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
             <h2>User Profile</h2>
             <p><strong>Name:</strong> John Doe</p>
-            <p><strong>Email:</strong> johndoe@example.com</p>
+            <p><strong>Email:</strong>demo@civicconnect.com</p>
             <p><strong>Location:</strong> New York, USA</p>
             <br>
             <p><strong>Issues Reported:</strong> <span id="issuesCount">0</span></p>
@@ -244,20 +235,9 @@
             <button class="submit-button" onclick="submitIssue()">Submit</button>
         </div>
 
-<<<<<<< HEAD
-        <div id="commonProblems" class="content common-problems-container">
-            <h2>Common Problems</h2>
-=======
         <div id="currentIssues" class="content current-issues-container">
             <h2>Current Issue List</h2>
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
             <ul id="problemsList">
-<<<<<<< HEAD
-                <li>Potholes - <span id="vote1">0</span> votes <button class="vote-button" onclick="vote(1)">Vote</button></li>
-                <li>Garbage Issues - <span id="vote2">0</span> votes <button class="vote-button" onclick="vote(2)">Vote</button></li>
-                <li>Water Supply Issues - <span id="vote3">0</span> votes <button class="vote-button" onclick="vote(3)">Vote</button></li>
-                <li>Electricity Problems - <span id="vote4">0</span> votes <button class="vote-button" onclick="vote(4)">Vote</button></li>
-=======
                 <li>
                     Potholes - <span id="vote1">0</span> votes 
                     <button class="vote-button" onclick="upvote(1)">Upvote</button>
@@ -278,7 +258,6 @@
                     <button class="vote-button" onclick="upvote(4)">Upvote</button>
                     <button class="vote-button" onclick="downvote(4)">Downvote</button>
                 </li>
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
             </ul>
             <div class="chart-container">
                 <canvas id="voteChart"></canvas>
@@ -293,11 +272,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <a href="#" class="logout" onclick="logout()">Logout</a>
-
-=======
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
     <script>
         let votes = [0, 0, 0, 0];
         const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#8E44AD", "#E67E22", "#2ECC71"];
@@ -321,7 +295,7 @@
                             label: function (tooltipItem) {
                                 let sum = votes.reduce((a, b) => a + b, 0);
                                 let percentage = (votes[tooltipItem.dataIndex] / sum * 100).toFixed(1);
-                                return `${percentage}% (${votes[tooltipItem.dataIndex]} votes)`;
+                                return ${percentage}% (${votes[tooltipItem.dataIndex]} votes);
                             }
                         }
                     }
@@ -348,7 +322,7 @@
         }
 
         function downvote(issueId) {
-            if (votes[issueId - 1] > 0) {
+            if (votes[issueId - 1] >            0) {
                 votes[issueId - 1]--;
                 document.getElementById('vote' + issueId).textContent = votes[issueId - 1];
                 voteChart.data.datasets[0].data = votes;
@@ -376,29 +350,14 @@
             let trackingList = document.getElementById("trackingList");
             let newItem = document.createElement("li");
             let imageUrl = URL.createObjectURL(imageInput.files[0]); // Create a URL for the uploaded image
-            newItem.innerHTML = `Issue Reported: ${description} at ${location}<br><img src="${imageUrl}" alt="Issue Image" class="live-tracking-image">`;
+            newItem.innerHTML = Issue Reported: ${description} at ${location}<br><img src="${imageUrl}" alt="Issue Image" class="live-tracking-image">;
             trackingList.appendChild(newItem);
             
             // Add to current issues dynamically
             let problemsList = document.getElementById("problemsList");
             let newProblem = document.createElement("li");
             let problemId = problemsList.children.length + 1;
-<<<<<<< HEAD
-            newProblem.innerHTML = `${description} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="vote(${problemId})">Vote</button>`;
-            problemsList.appendChild(newProblem);
-            
-            // Update Pie Chart
-            votes.push(0);
-            voteChart.data.labels.push(description);
-            voteChart.data.datasets[0].data.push(0);
-            voteChart.data.datasets[0].backgroundColor.push(colors[problemId % colors.length]);
-            voteChart.update();
-
-            // Clear input fields
-            document.getElementById("issueDescription").value = "";
-            document.getElementById("issueImage").value = "";
-=======
-            newProblem.innerHTML = `${description} at ${location} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="upvote(${problemId})">Upvote</button> <button class="vote-button" onclick="downvote(${problemId})">Downvote</button>`;
+            newProblem.innerHTML = ${description} at ${location} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="upvote(${problemId})">Upvote</button> <button class="vote-button" onclick="downvote(${problemId})">Downvote</button>;
             problemsList.appendChild(newProblem);
             
             // Update Pie Chart
@@ -412,12 +371,11 @@
             document.getElementById("issueDescription").value = "";
             document.getElementById("issueLocation").value = "";
             document.getElementById("issueImage").value = "";
->>>>>>> ee1a1d8be69f175e616f4f0c2d28c4e4b16f2bde
         }
 
         function logout() {
-            // Redirect to the index page after logout
-            window.location.href = "index.html"; // Replace with your actual index page URL
+            // Redirect to the login page or perform logout actions
+            window.location.href = "login.html"; // Replace with your actual login page URL
         }
     </script>
 </body>
