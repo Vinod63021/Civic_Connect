@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> <!-- Import Poppins font -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 100vh;
+            background: linear-gradient(135deg, #021526, #03346E);
+            background-size: 400% 400%; /* For animation effect */
+            animation: gradient 15s ease infinite; /* Optional animation */
+            font-family: 'Poppins', sans-serif; /* Use Poppins font */
+            color: white;
+            margin: 0; /* Remove default margin */
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .header {
+            font-style: inherit;
+            font-size: 60px; 
+            font-weight: 600; 
+            margin: 20px; 
+            text-align: center; /* Center the header */
+        }
+        .hamburger {
+            cursor: pointer; /* Pointer cursor on hover */
+            margin: 20px; /* Space around the hamburger icon */
+            display: flex;
+            flex-direction: column; /* Stack the dots vertically */
+            gap: 4px; /* Space between dots */
+            position: absolute; /* Position it absolutely */
+            top: 20px; /* Position from the top */
+            left: 20px; /* Position from the left */
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+        .dot {
+            width: 30px; /* Width of the dot */
+            height: 4px; /* Height of the dot */
+            background: white; /* Color of the dot */
+            border-radius: 2px; /* Rounded corners */
+            transition: transform 0.3s; /* Transition for animation */
+        }
+        .navbar {
+            display: none; /* Initially hidden */
+            flex-direction: column; /* Stack items vertically */
+            position: absolute; /* Position it absolutely */
+            top: 60px; /* Position below the hamburger icon */
+            left: 20px; /* Align to the left */
+            background: rgba(0, 0, 0, 0.7); /* Background for the menu */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px; /* Rounded corners */
+            transition: background 0.3s; /* Transition for hover effect */
+            margin-bottom: 10px; /* Space between items */
+        }
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.1); /* Change background on hover */
+        }
+        .container {
+            width: 80%; /* Increased width */
+            max-width: 900px; /* Set a max width for larger screens */
+            background: rgba(255, 255, 255, 0.1); /* Light background for contrast */
+            padding: 20px; 
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+            margin: 20px; /* Adjust margin for proper alignment */
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            max-height: 70vh; /* Limit the height of the container */
+            transition: transform 0.3s; /* Smooth transition for hover effect */
+        }
+        .container:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+        .content { display: none; }
+        .content.active { display: block; }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px; /* Rounded corners for inputs */
+            border: none; /* Remove default border */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+        }
+        .submit-button, .vote-button {
+            display: block; 
+            text-align: center; 
+            margin: 20px auto; 
+            padding: 10px 20px; 
+            background: linear-gradient(135deg, #CF6679, #B03A5D); /* Gradient background */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 25px; /* More rounded corners */
+            transition: background 0.3s, transform 0.3s; 
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            width: 150px; 
+            margin-bottom: 20px; /* Space from the bottom */
+        }
+        .submit-button:hover, .vote-button:hover {
+            background: linear-gradient(135deg, #388E3C, #7CB342); /* Darker green on hover */
+            transform: translateY(-2px); /* Slight lift effect on hover */
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 400px;
+            margin: auto;
+        }
+        .logout { 
+            display: block; 
+            text-align: center; 
+            padding: 10px 20px; 
+            background: linear-gradient(135deg, #CF6679, #B03A5D); /* Gradient background */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 25px; /* More rounded corners */
+            transition: background 0.3s, transform 0.3s; 
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            width: 150px; 
+            margin: 20px auto; /* Center the logout button */
+        }
+        .logout:hover { 
+            background: linear-gradient(135deg, #B03A5D, #CF6679); /* Reverse gradient on hover */
+            transform: translateY(-2px); /* Slight lift effect on hover */
+        }
+        /* Style for the current issues container */
+        #currentIssues {
+            background: rgba(255, 255, 255, 0.1); /* Light background for contrast */
+            border-radius: 10px; /* Rounded corners */
+            padding: 15px; /* Padding inside the container */
+            margin-top: 20px; /* Space above the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+        }
+        /* Style for the list items to use flexbox */
+        #problemsList {
+            list-style-type: none; /* Remove default list styling */
+            padding: 0; /* Remove default padding */
+        }
+        #problemsList li {
+            display: flex;
+            justify-content: space-between; /* Space between text and button */
+            align-items: center; /* Center vertically */
+            margin-bottom: 10px; /* Space between list items */
+            padding: 10px; /* Padding for list items */
+            background: rgba(255, 255, 255, 0.1); /* Light background for list items */
+            border-radius: 5px; /* Rounded corners for list items */
+            transition: background 0.3s; /* Smooth background transition */
+        }
+        #problemsList li:hover {
+            background: rgba(255, 255, 255, 0.2); /* Slightly darker on hover */
+        }
+        #problemsList li span {
+            flex-grow: 1; /* Allow the span to take up available space */
+            text-align: left; /* Align text to the left */
+        }
+        .vote-button {
+            margin-left: 10px; /* Space between text and button */
+        }
+        .live-tracking-image {
+            width: 100%; /* Set a fixed width for the image */
+            max-width: 300px; /* Set a max width for the image */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px; /* Rounded corners for the image */
+            margin-top: 10px; /* Space above the image */
+        }
+    </style>
+</head>
+<body>
+    <div class="hamburger" onclick="toggleMenu()">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <div class="navbar" id="navbar">
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('profile')">Profile</a>
+        <a href="#" onclick="showSection('reportIssue')">Report Issue</a>
+        <a href="#" onclick="showSection('currentIssues')">Current Issue List</a>
+        <a href="#" onclick="showSection('liveTracking')">Live Tracking</a>
+        <a href="#" class="logout" onclick="logout()">Logout</a>
+    </div>
+
+    <div class="header">Welcome to Civic Connect</div>
+
+    <div class="container">
+        <div id="home" class="content active">
+            <h2>Your platform for reporting and tracking civic issues in your community.</h2>
+            <div class="overview">
+                <h2>Overview</h2>
+                <p>Civic Connect is a revolutionary citizen engagement platform that transforms community complaints into meaningful actions while recognizing active contributors. Instead of traditional complaint systems that often feel slow and ineffective, Civic Connect empowers citizens to report local issues, contribute to community improvements, and earn Trust Points—a measure of their civic involvement. These points enhance their credibility, influence city decisions, and earn recognition from local authorities.</p>
+            </div>
+            <div class="features">
+                <h2>Key Features</h2>
+                <ul>
+                    <li><strong>Community-Powered Issue Reporting 🏙:</strong> Users report local problems like potholes, streetlight failures, or waste management issues through the app. AI and geotagging help validate reports for accuracy. The community can upvote and prioritize critical issues.</li>
+                    <li><strong>Trust Points System ⭐:</strong> Citizens earn Trust Points for reporting verified issues, providing solutions, and participating in civic discussions. Unlike traditional rewards, these points don’t translate into discounts—they enhance reputation and influence decision-making.</li>
+                    <li><strong>Community-Driven Prioritization 🗳:</strong> Residents can allocate Trust Points to the most pressing issues, helping authorities prioritize efficiently. This ensures that urgent problems get resolved faster based on public demand.</li>
+                    <li><strong>Government & Citizen Collaboration 🤝:</strong> Local governments gain real-time insights into public concerns. Authorities recognize and reward highly active citizens with public acknowledgments, leadership opportunities, and direct policy influence. Transparent tracking ensures accountability in issue resolution.</li>
+                    <li><strong>Recognition & Civic Influence 🏅:</strong> Users with high Trust Points may receive certificates of recognition from local officials, opportunities to be part of civic councils or advisory boards, and direct engagement with policymakers for city improvements.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="profile" class="content profile-container">
+            <h2>User Profile</h2>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong>demo@civicconnect.com</p>
+            <p><strong>Location:</strong> New York, USA</p>
+            <br>
+            <p><strong>Issues Reported:</strong> <span id="issuesCount">0</span></p>
+        </div>
+
+        <div id="reportIssue" class="content report-issue-container">
+            <h2>Report an Issue</h2>
+            <input type="text" id="issueLocation" placeholder="Enter the location of the issue..." required><br>
+            <input type="file" id="issueImage" accept="image/*"><br>
+            <textarea id="issueDescription" placeholder="Describe the issue..."></textarea><br>
+            <button class="submit-button" onclick="submitIssue()">Submit</button>
+        </div>
+
+        <div id="currentIssues" class="content current-issues-container">
+            <h2>Current Issue List</h2>
+            <ul id="problemsList">
+                <li>
+                    Potholes - <span id="vote1">0</span> votes 
+                    <button class="vote-button" onclick="upvote(1)">Upvote</button>
+                    <button class="vote-button" onclick="downvote(1)">Downvote</button>
+                </li>
+                <li>
+                    Garbage Issues - <span id="vote2">0</span> votes 
+                    <button class="vote-button" onclick="upvote(2)">Upvote</button>
+                    <button class="vote-button" onclick="downvote(2)">Downvote</button>
+                </li>
+                <li>
+                    Water Supply Issues - <span id="vote3">0</span> votes 
+                    <button class="vote-button" onclick="upvote(3)">Upvote</button>
+                    <button class="vote-button" onclick="downvote(3)">Downvote</button>
+                </li>
+                <li>
+                    Electricity Problems - <span id="vote4">0</span> votes 
+                    <button class="vote-button" onclick="upvote(4)">Upvote</button>
+                    <button class="vote-button" onclick="downvote(4)">Downvote</button>
+                </li>
+            </ul>
+            <div class="chart-container">
+                <canvas id="voteChart"></canvas>
+            </div>
+        </div>
+
+        <div id="liveTracking" class="content live-tracking-container">
+            <h2>Live Tracking</h2>
+            <ul id="trackingList">
+                <li>No issues reported yet.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let votes = [0, 0, 0, 0];
+        const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#8E44AD", "#E67E22", "#2ECC71"];
+        const ctx = document.getElementById('voteChart').getContext('2d');
+        
+        let voteChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Potholes', 'Garbage', 'Water Supply', 'Electricity'],
+                datasets: [{
+                    data: votes,
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                let sum = votes.reduce((a, b) => a + b, 0);
+                                let percentage = (votes[tooltipItem.dataIndex] / sum * 100).toFixed(1);
+                                return ${percentage}% (${votes[tooltipItem.dataIndex]} votes);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function toggleMenu() {
+            const navbar = document.getElementById('navbar');
+            navbar.style.display = navbar.style.display === 'flex' ? 'none' : 'flex'; // Toggle menu visibility
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById('navbar').style.display = 'none'; // Hide menu after selection
+        }
+
+        function upvote(issueId) {
+            votes[issueId - 1]++;
+            document.getElementById('vote' + issueId).textContent = votes[issueId - 1];
+            voteChart.data.datasets[0].data = votes;
+            voteChart.update();
+        }
+
+        function downvote(issueId) {
+            if (votes[issueId - 1] >            0) {
+                votes[issueId - 1]--;
+                document.getElementById('vote' + issueId).textContent = votes[issueId - 1];
+                voteChart.data.datasets[0].data = votes;
+                voteChart.update();
+            }
+        }
+
+        function submitIssue() {
+            let description = document.getElementById("issueDescription").value.trim();
+            let location = document.getElementById("issueLocation").value.trim();
+            let imageInput = document.getElementById("issueImage");
+
+            if (!description || !location || imageInput.files.length === 0) {
+                alert("Please enter a description, location, and upload an image.");
+                return;
+            }
+
+            alert("Issue submitted successfully!");
+            
+            // Update issue count in the profile
+            let issueCount = document.getElementById("issuesCount");
+            issueCount.textContent = parseInt(issueCount.textContent) + 1;
+
+            // Add to live tracking
+            let trackingList = document.getElementById("trackingList");
+            let newItem = document.createElement("li");
+            let imageUrl = URL.createObjectURL(imageInput.files[0]); // Create a URL for the uploaded image
+            newItem.innerHTML = Issue Reported: ${description} at ${location}<br><img src="${imageUrl}" alt="Issue Image" class="live-tracking-image">;
+            trackingList.appendChild(newItem);
+            
+            // Add to current issues dynamically
+            let problemsList = document.getElementById("problemsList");
+            let newProblem = document.createElement("li");
+            let problemId = problemsList.children.length + 1;
+            newProblem.innerHTML = ${description} at ${location} - <span id="vote${problemId}">0</span> votes <button class="vote-button" onclick="upvote(${problemId})">Upvote</button> <button class="vote-button" onclick="downvote(${problemId})">Downvote</button>;
+            problemsList.appendChild(newProblem);
+            
+            // Update Pie Chart
+            votes.push(0);
+            voteChart.data.labels.push(description);
+            voteChart.data.datasets[0].data.push(0);
+            voteChart.data.datasets[0].backgroundColor.push(colors[problemId % colors.length]);
+            voteChart.update();
+
+            // Clear input fields
+            document.getElementById("issueDescription").value = "";
+            document.getElementById("issueLocation").value = "";
+            document.getElementById("issueImage").value = "";
+        }
+
+        function logout() {
+            // Redirect to the login page or perform logout actions
+            window.location.href = "login.html"; // Replace with your actual login page URL
+        }
+    </script>
+</body>
+</html>
